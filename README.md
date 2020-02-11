@@ -2,6 +2,8 @@
 
 This tool helps managing and labelling inbound emails from GSS SFDC.
 
+![GSS SFDC Filters manager screenshot](img/GSSSFDC-filters.png)
+
 ## Installation
 
 1. Copy the [Google Sheet](https://docs.google.com/spreadsheets/d/1b4HgisYEb_KZbVchKHwCWTw2WBwxFGXtWRAa8_FUz_Q/edit?usp=sharing) in your drive
