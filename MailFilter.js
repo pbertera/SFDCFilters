@@ -52,7 +52,6 @@ function onOpen() {
   var menu = [
     {name: "Help",functionName: "help"},
     {name: "Run", functionName: "workOn"},
-    null,
     {name: "Install Trigger", functionName: "install"},
     {name: "Remove Trigger", functionName: "uninstall"}
   ];  
@@ -78,22 +77,26 @@ function readFilters() {
     'caseNumber': 3,
     'caseSeverity': 4,
     'TAMCase': 5,
-    'sbr': 6,
-    'subject': 7,
-    'regex': 8,
-    'firstDay': 9,
-    'lastDay': 10
+    'internalStatus': 6,
+    'status': 7,
+    'owner': 8,
+    'contributor': 9,
+    'sbr': 10,
+    'subject': 11,
+    'regex': 12,
+    'firstDay': 13,
+    'lastDay': 14
   };
 
 // index representing the action column (column A is 0)  
   var actionColumns = {
-    'label': 11,
-    'star': 12,
-    'markRead': 13,
-    'markUnread': 14,
-    'trash': 15,
-    'archive': 16,
-    'stopProcessing': 17
+    'label': 15,
+    'star': 16,
+    'markRead': 17,
+    'markUnread': 18,
+    'trash': 19,
+    'archive': 20,
+    'stopProcessing': 21
   };
 
   var ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -126,6 +129,18 @@ function readFilters() {
       }
       if(values[rowNum][filterColumns.TAMCase]){
         filter.selectors.TAMCase = true;
+      }
+      if(values[rowNum][filterColumns.internalStatus] !==  ""){
+        filter.selectors.internalStatus = values[rowNum][filterColumns.internalStatus];
+      }
+      if(values[rowNum][filterColumns.status] !==  ""){
+        filter.selectors.status = values[rowNum][filterColumns.status];
+      }
+      if(values[rowNum][filterColumns.owner] !==  ""){
+        filter.selectors.owner = values[rowNum][filterColumns.owner];
+      }
+      if(values[rowNum][filterColumns.contributor] !==  ""){
+        filter.selectors.contributor = values[rowNum][filterColumns.contributor];
       }
       if(values[rowNum][filterColumns.sbr] !==  ""){
         filter.selectors.sbr = values[rowNum][filterColumns.sbr];
@@ -240,6 +255,18 @@ function workOn() {
       }
       if (filter.selectors.TAMCase) { // SFDC TAM case
         if (!isMatched('X-SFDC-X-TAM-Case: true')) return false;
+      }
+      if (filter.selectors.internalStatus) { // SFDC Internal status
+        if (!isMatched('X-SFDC-X-Internal-Status: ' + filter.selectors.internalStatus)) return false;
+      }
+      if (filter.selectors.status) { // SFDC Status
+        if (!isMatched('X-SFDC-X-Status: ' + filter.selectors.status)) return false;
+      }
+      if (filter.selectors.owner) { // SFDC owner
+        if (!isMatched('X-SFDC-X-Owner: .*' + filter.selectors.owner + ".*")) return false;
+      }
+      if (filter.selectors.contributor) { // SFDC contributor
+        if (!isMatched('X-SFDC-X-Contributors: .*' + filter.selectors.contributor + ".*")) return false;
       }
       if (filter.selectors.sbr) { // SFDC SBR group
         if (!isMatched('X-SFDC-X-SBR-Group: ' + filter.selectors.sbr)) return false;

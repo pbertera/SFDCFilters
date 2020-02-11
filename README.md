@@ -19,15 +19,21 @@ In case an email matches the filter selector the filter actions are applied, if 
 
 ### Selectors
 
-- **Product:** checks the email header `X-SFDC-X-Product`
-- **Case:** checks the email header `X-SFDC-X-Case-Number`
-- **Severity:** checks the email header `X-SFDC-X-Severity`
-- **TAM Case:** checks the email header `X-SFDC-X-TAM-Case`
-- **SBR:** checks the email header `X-SFDC-X-SBR-Group`
-- **Subject:** checks the email subject
-- **Regex:** checks the email against a regular expression
-- **First Day:** enable the filter starting on the day defined here
-- **Last Day:** enable the filter not after the day defined here
+| Selector Name | Match if ... |
+|:-------------:|:-------------------:|
+| Product       | ... the email header `X-SFDC-X-Product` is the same of the defined value |
+| Case          | ... the email header `X-SFDC-X-Case-Number` is the same of the defined value |
+| Severity      | ... the email header `X-SFDC-X-Severity` contains the defined value |
+| TAM Case      | ... the email header `X-SFDC-X-TAM-Case` is `true` |
+| Internal status | ... the email header `X-SFDC-X-Internal-Status` is the same of the defined value |
+| Status        | ... the email header `X-SFDC-X-Status` is the same of the defined value |
+| Owner         | ... the email header `X-SFDC-Owner` contains the defined value |
+| Contributor   | ... the email header `X-SFDC-Contributor` contains the defined value |
+| SBR           | ... the email header `X-SFDC-X-SBR-Group` is the same of the defined value |
+| Subject       | ... the email subject contains the defined value |
+| Regex         | ... the email matches with the defined regex |
+| First day     | ... the filter is evaluated during or after the defined date (hint: double click on the cell to have a date picker) |
+| Last day      | ... the filter is evaluated during or before the defined date (hint: double click on the cell to have a date picker) |
 
 **NOTE:** First and Last day are compared against the script execution time, not the email delivery time
 
