@@ -1,4 +1,4 @@
-# SFDCnotifier
+# GSS SFDC filters manager
 
 This tool helps managing and labelling inbound emails from GSS SFDC.
 
