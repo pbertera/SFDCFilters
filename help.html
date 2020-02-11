@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+  </head>
+  <body>
+    <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons.css">
+    <h2>Gmail SFDC filters manager</h2>
+    <p>This tool allows you to create a set of filters to easily organize GSS SFDC emails</p>
+    <h3>The Filters sheet</h3>
+    <p>This sheet is used to manage all the filters, every row defines a filter, each filter is composed by various columns divided in 2 sections: <b>selectors</b> and <b>actions</b>. Selectors are used to determined if Actions should be performed on the message.</p>
+    <p>Filters are checked from the top-down, all the selectors must match in order to apply the defined actions.</p>
+    <p>In case <b>Stop</b> is checked and all the selectors are matched the next filters are not evaluated.</p>
+    <h3>The Config sheet</h3>
+    <p>This defines some settings:</p>
+    <ul>
+      <li><b>Main Filter:</b> defines in which folder the filters should be applied</li>
+      <li><b>Batch size:</b> defines how many email threads should be evaluated every time</li>
+      <li><b>Poll time:</b> defines the interval in minutes between one run and onother</li>
+    </ul>
+    <h3>How to install</h3>
+    <p>To install the filters you have to:</p>
+    <ol>
+      <li>Setup the Main Filter into the Config sheet</li>
+      <li>Setup one or more filters into the Filters sheet</li>
+      <li>Click on the <b>GSS SFDC filters</b> menu and then <b>Install</b></li>
+    </ol>
+    <hr/>
+    <p><input class="blue" type="button" value="Close" onclick="google.script.host.close()" /></p>
+  </body>
+</html>
+
+
