@@ -5,36 +5,7 @@
   </head>
   <body>
     <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons.css">
-<h1 id="gss-sfdc-filters-manager">GSS SFDC filters manager</h1>
-<p>This tool helps managing and labelling inbound emails from GSS SFDC.</p>
-<h2 id="installation">Installation</h2>
-<ol class="incremental" type="1">
-<li>Copy the <a href="https://docs.google.com/spreadsheets/d/1b4HgisYEb_KZbVchKHwCWTw2WBwxFGXtWRAa8_FUz_Q/edit?usp=sharing">Google Sheet</a> in your drive</li>
-<li>Add your selectors and actions</li>
-<li>Make sure that the <strong>Main filter</strong> into the <strong>Config</strong> sheet is properly set</li>
-<li>To test the rules, make sure to have some email matching the rules and the <strong>Main filter</strong> and then run the script clicking on <strong>GSS SFDC filters -&gt; Run</strong>, this will run the script only one time</li>
-<li>To permanently install the script click on <strong>GSS SFDC filters -&gt; Install Trigger</strong>, this will make the script running every X minutes defined into the <strong>Poll time</strong> cell of the <strong>Config</strong> sheet</li>
-</ol>
-<h2 id="how-it-works">How it works</h2>
-<p>The scripts looks into all the email matching the <strong>Main filter</strong> criteria, per each message the filters into the <strong>Filters sheet</strong> are evaluated starting from the fist line. In case an email matches the filter selector the filter actions are applied, if <strong>Stop</strong> column isn’t flagged the email is evaluated against the next filter.</p>
-<h3 id="selectors">Selectors</h3>
-<ul class="incremental">
-<li><strong>Product:</strong> checks the email header <code>X-SFDC-X-Product</code></li>
-<li><strong>Case:</strong> checks the email header <code>X-SFDC-X-Case-Number</code></li>
-<li><strong>Severity:</strong> checks the email header <code>X-SFDC-X-Severity</code></li>
-<li><strong>TAM Case:</strong> checks the email header <code>X-SFDC-X-TAM-Case</code></li>
-<li><strong>SBR:</strong> checks the email header <code>X-SFDC-X-SBR-Group</code></li>
-<li><strong>Subject:</strong> checks the email subject</li>
-<li><strong>Regex:</strong> checks the email against a regular expression</li>
-<li><strong>First Day:</strong> enable the filter starting on the day defined here</li>
-<li><strong>Last Day:</strong> enable the filter not after the day defined here</li>
-</ul>
-<p><strong>NOTE:</strong> First and Last day are compared against the script execution time, not the email delivery time</p>
-<h2 id="links">Links</h2>
-<ul class="incremental">
-<li><a href="https://developers.google.com/apps-script/reference">Google apps script reference</a></li>
-<li><a href="https://github.com/google/clasp">clasp</a></li>
-</ul>
+    For info and documentaion please check the <a href="https://gitlab.cee.redhat.com/pbertera/SFDCFilters">project page</a>
     <p><input class="blue" type="button" value="Close" onclick="google.script.host.close()" /></p>
   </body>
 </html>
