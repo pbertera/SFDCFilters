@@ -109,10 +109,10 @@ function readFilters() {
 
   // This logs the spreadsheet in CSV format with a trailing comma
   for (var rowNum = 2; rowNum < values.length; rowNum++) {
-    var filter = {'id': rowNum, 'selectors':{}, 'actions': {}}
+    var filter = {'id': rowNum + 1, 'selectors':{}, 'actions': {}}
     if(values[rowNum][filterColumns.isActive]){
 
-      Logger.log("Filter " + rowNum + " is active");
+      Logger.log("Filter " + filter['id'] + " is active");
       // SELCTORS
       
       if(values[rowNum][filterColumns.account] !==  ""){
@@ -188,7 +188,7 @@ function readFilters() {
 
 function workOn() {
   filters = readFilters();
-  Logger.log(filters);
+  //Logger.log(filters);
 
   var dryrun = false;
   var labelCache = {};
@@ -207,21 +207,20 @@ function workOn() {
     var label = null;
     var labelName = "";
 
-    var subject = thread.getFirstMessageSubject()
-    Logger.log("Applying label " + name + " to " + subject);
-
     // create nested labels by parsing "/"
     name.split('/').forEach(function(labelPart, i) {
       labelName = labelName + (i===0 ? "" : "/") + labelPart.trim();
       label = findOrCreateLabel(labelName);
     });
     thread.addLabel(label);
-    Logger.log("Label " + name + " applied");
   }
 
   threads.forEach(function(thread) {
     var messages = thread.getMessages();
     if (messages == null) return; // nothing to do
+
+    var subject = thread.getFirstMessageSubject()
+    Logger.log("Processing mail thread " + subject);
 
     var message = messages[messages.length - 1]; // most recent message
     var body = message.getRawContent();
@@ -280,25 +279,45 @@ function workOn() {
       if (filter.selectors.lastDay) {
         if (today > filter.selectors.lastDay) return false;
       }
-      Logger.log("filter matched");
+
+      Logger.log("filter " + filter.id + " matched");
+
       if (!dryrun) {
-        if (filter.actions.label !== undefined) applyLabel(filter.actions.label, thread);
-        if (filter.actions.star) message.star();
-        if (filter.actions.markRead) message.markRead();
-        if (filter.actions.markUnread) message.markUnread();
-        if (filter.actions.trash) message.moveToTrash();
-        if (filter.actions.archive) thread.moveToArchive();
+        if (filter.actions.label !== undefined) {
+          applyLabel(filter.actions.label, thread);
+          Logger.log("Applied label " + filter.actions.label);
+        }
+        if (filter.actions.star) {
+          message.star();
+          Logger.log("Starred message");
+        }
+        if (filter.actions.markRead) {
+          message.markRead();
+          Logger.log("Marked as read");
+        }
+        if (filter.actions.markUnread) {
+          message.markUnread();
+          Logger.log("Marked as unread");
+        }
+        if (filter.actions.trash) {
+          message.moveToTrash();
+          Logger.log("Modev to trash");
+        }
+        if (filter.actions.archive) {
+          thread.moveToArchive();
+          Logger.log("Thread archived");
+        }
       }
       return true;
     }
 
     // walk over the filters and process them
     for (var i=0; i < filters.length; i++) {
-      Logger.log("Processing filter " +  filters[i].id);
+      //Logger.log("Processing filter " +  filters[i].id);
       isMatched = applyFilters(filters[i]);
       // if filter.stopProcessing is true we don't process the next filter
       if (filters[i].stopProcessing && isMatched){
-        Logger.log("Stop processing filters");
+        Logger.log("Stop processing filters, Stop is flagged");
         break;
       }
     }
