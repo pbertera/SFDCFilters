@@ -61,6 +61,8 @@ Selectors are used to define to which email we want to perfom a defined action.
 * **Archive:** move the message out of the Inbox
 * **Stop:** if selectors are matched do not continue evaluating next filters
 
+**IMPORTANT:** all the actions are applied to the whole email thread and not the last email belonging to the thread.
+
 ## Notes
 
 Since Google apps have some API [quota limits](https://developers.google.com/apps-script/guides/services/quotas), the script should work on a limited number of emails. I personally configure gmail with multiple inboxes, let the script categorize my SFDC emails and then I keep a "near to zero inbox" approach.

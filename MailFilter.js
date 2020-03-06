@@ -224,7 +224,8 @@ function workOn() {
 
     var message = messages[messages.length - 1]; // most recent message
     var body = message.getRawContent();
-
+    // var messageId = message.getHeader('Message-ID');
+    // Logger.log("Processing message ID: " + messageId);
     function applyFilters(filter) {
       var today = new Date();
       // check if a regexp match against the full email body (TODO: case sensitivness ?)
@@ -288,19 +289,19 @@ function workOn() {
           Logger.log("Applied label " + filter.actions.label);
         }
         if (filter.actions.star) {
-          message.star();
+          thread.star();
           Logger.log("Starred message");
         }
         if (filter.actions.markRead) {
-          message.markRead();
+          thread.markRead();
           Logger.log("Marked as read");
         }
         if (filter.actions.markUnread) {
-          message.markUnread();
+          thread.markUnread();
           Logger.log("Marked as unread");
         }
         if (filter.actions.trash) {
-          message.moveToTrash();
+          thread.moveToTrash();
           Logger.log("Modev to trash");
         }
         if (filter.actions.archive) {
