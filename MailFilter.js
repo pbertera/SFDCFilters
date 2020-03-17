@@ -289,7 +289,7 @@ function workOn() {
           Logger.log("Applied label " + filter.actions.label);
         }
         if (filter.actions.star) {
-          thread.star();
+          message.star();
           Logger.log("Starred message");
         }
         if (filter.actions.markRead) {
