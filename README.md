@@ -54,14 +54,12 @@ Selectors are used to define to which email we want to perfom a defined action.
 ### Actions
 
 * **Label:** the defined label is applied to the mail thread, to nest labels the `/` separator can be used (eg. `Customers/Bank of America`)
-* **Star:** the mail message is starred, unfortunately the Google API do not provide any way to apply different start, only the yelow star
-* **Mark Read:** the mail message is marked as read
-* **Mark Unread:** the mail message is marked as unread
-* **Trash:** move the message to the trash
-* **Archive:** move the message out of the Inbox
+* **Star:** the last mail message of the thread is starred, unfortunately the Google API do not provide any way to apply different start, only the yelow star
+* **Mark Read:** the whole mail thread is marked as read
+* **Mark Unread:** the whole mail thread is marked as unread
+* **Trash:** move the whole mail thread to the trash
+* **Archive:** move the whole mail thread to the archive
 * **Stop:** if selectors are matched do not continue evaluating next filters
-
-**IMPORTANT:** all the actions are applied to the whole email thread and not the last email belonging to the thread.
 
 ## Notes
 
