@@ -5,8 +5,6 @@
  * This script was inspired by this post https://www.labnol.org/internet/advanced-gmail-filters/4875/
  *
  * TODO: 
- * - add action mark thread important / unimportant
- * - add action remove label from thread
  * - add selector: day of the week
  * - investigate how to refresh the gmail app wui (maybe https://developers.google.com/apps-script/reference/gmail/gmail-thread#refresh) ?
  */
@@ -16,6 +14,8 @@ var ss = SpreadsheetApp.getActiveSpreadsheet();
 var mainFilter = ss.getRange("Config!A2").getValue();
 var batchSize = ss.getRange("Config!B2").getValue();
 var pollTime = ss.getRange("Config!C2").getValue();
+var labelSeparator = ss.getRange("Config!D2").getValue();
+var removeLabelPref = ss.getRange("Config!E2").getValue();
 
 Logger.log("Main Filter: " + mainFilter);
 Logger.log("Batch size: " + batchSize);
@@ -90,13 +90,14 @@ function readFilters() {
 
 // index representing the action column (column A is 0)  
   var actionColumns = {
-    'label': 15,
+    'labels': 15,
     'star': 16,
-    'markRead': 17,
-    'markUnread': 18,
-    'trash': 19,
-    'archive': 20,
-    'stopProcessing': 21
+    'markImportant': 17,
+    'markRead': 18,
+    'markUnread': 19,
+    'trash': 20,
+    'archive': 21,
+    'stopProcessing': 22
   };
 
   var ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -159,26 +160,29 @@ function readFilters() {
       }
       
       // ACTIONS
-      if(values[rowNum][actionColumns.label] !==  ""){
-        filter.actions.label = values[rowNum][actionColumns.label];
+      if(values[rowNum][actionColumns.labels] !==  ""){
+        filter.actions.labels = values[rowNum][actionColumns.labels];
       }
       if(values[rowNum][actionColumns.star]){
-        filter.actions.star = values[rowNum][actionColumns.star];
+        filter.actions.star = true;
+      }
+      if(values[rowNum][actionColumns.markImportant]){
+        filter.actions.markImportant = true;
       }
       if(values[rowNum][actionColumns.markRead]){
-        filter.actions.markRead = values[rowNum][actionColumns.markRead];
+        filter.actions.markRead = true;
       }
       if(values[rowNum][actionColumns.markUnread]){
-        filter.actions.markUnread = values[rowNum][actionColumns.markUnread];
+        filter.actions.markUnread = true;
       }
       if(values[rowNum][actionColumns.trash]){
-        filter.actions.trash = values[rowNum][actionColumns.trash];
+        filter.actions.trash = true;
       }
       if(values[rowNum][actionColumns.archive]){
-        filter.actions.archive = values[rowNum][actionColumns.archive];
+        filter.actions.archive = true;
       }
       if(values[rowNum][actionColumns.stopProcessing]){
-        filter.stopProcessing = values[rowNum][actionColumns.stopProcessing];
+        filter.stopProcessing = true;
       }
       filters.push(filter);
     }
@@ -284,13 +288,27 @@ function workOn() {
       Logger.log("filter " + filter.id + " matched");
 
       if (!dryrun) {
-        if (filter.actions.label !== undefined) {
-          applyLabel(filter.actions.label, thread);
-          Logger.log("Applied label " + filter.actions.label);
+        if (filter.actions.labels !== undefined) {
+          var labels = filter.actions.labels.split(labelSeparator);
+          labels.forEach(function(label){
+            if (label.indexOf(removeLabelPref) == 0){
+              var labelName = label.replace(removeLabelPref, '' );
+              var removeLabel = GmailApp.getUserLabelByName(labelName);
+              thread.removeLabel(removeLabel);
+              Logger.log("Removed label " + labelName);
+            } else {
+              applyLabel(label, thread);
+              Logger.log("Applied label " + label);
+            }
+          });
         }
         if (filter.actions.star) {
           message.star();
           Logger.log("Starred message");
+        }
+        if (filter.actions.markImportant) {
+          thread.markImportant();
+          Logger.log("Marked as important");
         }
         if (filter.actions.markRead) {
           thread.markRead();

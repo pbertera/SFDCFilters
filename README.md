@@ -15,9 +15,9 @@ This tool helps managing and labelling inbound emails from GSS SFDC.
 ## How it works
 
 This script is a Google app script bound to a Google spreadsheet.
-The script creates a new **GSS SFDC filters** menu entry on the Google spreadsheet, this menu will let you run the script just once (via the **Run** action) or install a trigger that automatically run the script every X minutes (X is defined itno the **Poll time** `C2` cell of the `Config` sheet).
+The script creates a new **GSS SFDC filters** menu entry on the Google spreadsheet, this menu will let you run the script just once (via the **Run** action) or install a trigger that automatically run the script every X minutes (X is defined itno the **Poll time** *C2* cell of the *Config* sheet).
 
-When the script run it looks into all the email matching the **Main filter** criteria, per each message all the filters into the **Filters sheet** are evaluated one by one starting from the fist line.
+When the script runs it looks into all the email matching the **Main filter** criteria, per each message all the filters into the **Filters sheet** are evaluated one by one starting from the fist line.
 Emails are checked against the selectors, if **all** the selector are matched, then the defined actions are performed.
 
 If the **Stop** column is flagged the next filters are not evaluated and the we go to the next mail message.
@@ -53,8 +53,9 @@ Selectors are used to define to which email we want to perfom a defined action.
 
 ### Actions
 
-* **Label:** the defined label is applied to the mail thread, to nest labels the `/` separator can be used (eg. `Customers/Bank of America`)
+* **Labels:** the defined labels are applied to the mail thread, to nest labels the `/` separator can be used (eg. `Customers/Bank of America`). You can apply multiple labels at once to the thread dividing each label with the separator defined into the cell *D2* of the *Config* sheet (Labels separator). Is also possible to remove a label prefixing the label name with the prefix defined into the cell *E2* of the *Config* sheet, (eg. `!!MyPlate`)
 * **Star:** the last mail message of the thread is starred, unfortunately the Google API do not provide any way to apply different start, only the yelow star
+* **Mark Important:** the whole mail thread is marked as important
 * **Mark Read:** the whole mail thread is marked as read
 * **Mark Unread:** the whole mail thread is marked as unread
 * **Trash:** move the whole mail thread to the trash
@@ -63,7 +64,8 @@ Selectors are used to define to which email we want to perfom a defined action.
 
 ## Notes
 
-Since Google apps have some API [quota limits](https://developers.google.com/apps-script/guides/services/quotas), the script should work on a limited number of emails. I personally configure gmail with multiple inboxes, let the script categorize my SFDC emails and then I keep a "near to zero inbox" approach.
+Since Google apps have some API [quota limits](https://developers.google.com/apps-script/guides/services/quotas), the script should process a limited number of emails.
+I adopt this approach: I configure my Gmail inbox to apply the label **SFDC** to all the messages coming from **support@redhat.com**, then I set the *Main Filter* (cell *A2* of the *Config* sheet) to **label:sfdc in:inbox**, so the script will parse only a limited number of messages. Then in my ruleset I have that removes the `SFDC` from all the messages so emails will get processed only once.
 
 ## FAQ
 
