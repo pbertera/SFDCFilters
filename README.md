@@ -1,6 +1,6 @@
 # GSS SFDC filters manager
 
-This tool helps managing and labelling inbound emails from GSS SFDC.
+This tool helps managing and labelling inbound emails from GSS SFDC for proper categorization, prioritization and tagging of support cases email from SFDC.
 
 ![GSS SFDC Filters manager screenshot](img/GSSSFDC-filters.png)
 
@@ -8,19 +8,21 @@ This tool helps managing and labelling inbound emails from GSS SFDC.
 
 1. Copy the [Google Sheet](https://docs.google.com/spreadsheets/d/1prit02jMf8Ojxj-iVJOoBvB4hlwSaq4GC4GTNHa4LkQ/edit#gid=0) in your drive
 2. Add your selectors and actions
-3. Make sure that the **Main filter** into the **Config** sheet is properly set (see below for more info)
-4. To test the rules, make sure to have some email matching the rules and the **Main filter** and then run the script clicking on **GSS SFDC filters -> Run**, this will run the script only one time
-5. To permanently install the script click on **GSS SFDC filters -> Install Trigger**, this will make the script running every X minutes defined into the **Poll time** cell of the **Config** sheet
+3. Make sure that the `Main filter` into the `Config` sheet is properly set (see below for more info)
+4. To test the rules, make sure to have some email matching the rules and the `Main filter` and then run the script clicking on **GSS SFDC filters -> Run**, this will run the script only one time
+5. To permanently install the script click on **GSS SFDC filters -> Install Trigger**, this will make the script running every `X` minutes defined into the `Poll time` cell of the `Config` sheet.
 
 ## How it works
 
 This script is a Google app script bound to a Google spreadsheet.
-The script creates a new **GSS SFDC filters** menu entry on the Google spreadsheet, this menu will let you run the script just once (via the **Run** action) or install a trigger that automatically run the script every X minutes (X is defined itno the **Poll time** *C2* cell of the *Config* sheet).
+The script creates a new **GSS SFDC filters** menu entry on the Google spreadsheet, this menu will let you run the script just once (via the **Run** action) or install a trigger that automatically run the script every X minutes (X is defined itno the `Poll time` `C2` cell of the `Config` sheet).
 
-When the script runs it looks into all the email matching the **Main filter** criteria, per each message all the filters into the **Filters sheet** are evaluated one by one starting from the fist line.
+When the script runs it looks into all the email matching the `Main filter` criteria, per each message all the filters into the **Filters sheet** are evaluated one by one starting from the fist line.
 Emails are checked against the selectors, if **all** the selector are matched, then the defined actions are performed.
 
 If the **Stop** column is flagged the next filters are not evaluated and the we go to the next mail message.
+
+Creating a filter rule without any selector the rule will match all the messages.
 
 ## Filters definition
 
@@ -29,7 +31,7 @@ Every filter is defined in 2 main parts:
 - selectors
 - actions
 
-Selectors are used to define to which email we want to perfom a defined action.
+Selectors are used to match a mail, when a message is matched the actions defined into the rule are applied.
 
 ### Selectors
 
@@ -54,7 +56,7 @@ Selectors are used to define to which email we want to perfom a defined action.
 ### Actions
 
 * **Labels:** the defined labels are applied to the mail thread, to nest labels the `/` separator can be used (eg. `Customers/Bank of America`). You can apply multiple labels at once to the thread dividing each label with the separator defined into the cell *D2* of the *Config* sheet (Labels separator). Is also possible to remove a label prefixing the label name with the prefix defined into the cell *E2* of the *Config* sheet, (eg. `!!MyPlate`)
-* **Star:** the last mail message of the thread is starred, unfortunately the Google API do not provide any way to apply different start, only the yelow star
+* **Star:** the **last mail message of the thread** is starred, unfortunately the Google API do not provide any way to apply different start, only the yelow star is used
 * **Mark Important:** the whole mail thread is marked as important
 * **Mark Read:** the whole mail thread is marked as read
 * **Mark Unread:** the whole mail thread is marked as unread
