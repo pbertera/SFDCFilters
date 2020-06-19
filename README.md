@@ -67,6 +67,13 @@ Selectors are used to define to which email we want to perfom a defined action.
 Since Google apps have some API [quota limits](https://developers.google.com/apps-script/guides/services/quotas), the script should process a limited number of emails.
 I adopt this approach: I configure my Gmail inbox to apply the label **SFDC** to all the messages coming from **support@redhat.com**, then I set the *Main Filter* (cell *A2* of the *Config* sheet) to **label:sfdc in:inbox**, so the script will parse only a limited number of messages. Then in my ruleset I have that removes the `SFDC` from all the messages so emails will get processed only once.
 
+## How to safely play / test the script
+
+0. Change the `Main Filter` (cell `A2` of the `Config` sheet) to `label:sandbox is:unread`, this will instruct the script to process only the unread messages labelled with `sandbox`
+1. Create a Gmail label named `sandbox`
+2. Label some messages that you want to use as playground with the `sandbox` label
+3. Execute the script
+
 ## FAQ
 
 - Q: After installing the scrip I will see new mail filters in my Gmail ?
