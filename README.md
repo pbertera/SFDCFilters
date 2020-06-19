@@ -55,7 +55,7 @@ Selectors are used to match a mail, when a message is matched the actions define
 
 ### Actions
 
-* **Labels:** the defined labels are applied to the mail thread, to nest labels the `/` separator can be used (eg. `Customers/Bank of America`). You can apply multiple labels at once to the thread dividing each label with the separator defined into the cell *D2* of the *Config* sheet (Labels separator). Is also possible to remove a label prefixing the label name with the prefix defined into the cell *E2* of the *Config* sheet, (eg. `!!MyPlate`)
+* **Labels:** the defined labels are applied to the mail thread, to nest labels the `/` separator can be used (eg. `Customers/Bank of America`). You can apply multiple labels at once to the thread dividing each label with the separator defined into the cell `D2` of the `Config` sheet (Labels separator). Is also possible to remove a label prefixing the label name with the prefix defined into the cell `E2` of the `Config` sheet, (eg. `!!MyPlate`)
 * **Star:** the **last mail message of the thread** is starred, unfortunately the Google API do not provide any way to apply different start, only the yelow star is used
 * **Mark Important:** the whole mail thread is marked as important
 * **Mark Read:** the whole mail thread is marked as read
@@ -67,7 +67,7 @@ Selectors are used to match a mail, when a message is matched the actions define
 ## Notes
 
 Since Google apps have some API [quota limits](https://developers.google.com/apps-script/guides/services/quotas), the script should process a limited number of emails.
-I adopt this approach: I configure my Gmail inbox to apply the label **SFDC** to all the messages coming from **support@redhat.com**, then I set the *Main Filter* (cell *A2* of the *Config* sheet) to **label:sfdc in:inbox**, so the script will parse only a limited number of messages. Then in my ruleset I have that removes the `SFDC` from all the messages so emails will get processed only once.
+I adopt this approach: I configure my Gmail inbox to apply the label **SFDC** to all the messages coming from **support@redhat.com**, then I set the `Main Filter` (cell `A2` of the `Config` sheet) to **label:sfdc in:inbox**, so the script will parse only a limited number of messages. Then in my ruleset I have that removes the `SFDC` from all the messages so emails will get processed only once.
 
 ## How to safely play / test the script
 
