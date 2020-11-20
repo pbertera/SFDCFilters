@@ -14,7 +14,7 @@ var ss = SpreadsheetApp.getActiveSpreadsheet();
 var mainFilter = ss.getRange("Config!A2").getValue();
 var batchSize = ss.getRange("Config!B2").getValue();
 var pollTime = ss.getRange("Config!C2").getValue();
-var labelSeparator = ss.getRange("Config!D2").getValue();
+var separator = ss.getRange("Config!D2").getValue();
 var removeLabelPref = ss.getRange("Config!E2").getValue();
 
 Logger.log("Main Filter: " + mainFilter);
@@ -73,7 +73,7 @@ function readFilters() {
   var filterColumns = {
     'isActive': 0,
     'account': 1,
-    'product': 2,
+    'products': 2,
     'caseNumber': 3,
     'caseSeverity': 4,
     'TAMCase': 5,
@@ -113,14 +113,14 @@ function readFilters() {
     var filter = {'id': rowNum + 1, 'selectors':{}, 'actions': {}}
     if(values[rowNum][filterColumns.isActive]){
 
-      Logger.log("Filter " + filter['id'] + " is active");
+      Logger.log("Filter on row " + filter['id'] + " is active");
       // SELCTORS
       
       if(values[rowNum][filterColumns.account] !==  ""){
         filter.selectors.account = values[rowNum][filterColumns.account];
       }
-      if(values[rowNum][filterColumns.product] !==  ""){
-        filter.selectors.product = values[rowNum][filterColumns.product];
+      if(values[rowNum][filterColumns.products] !==  ""){
+        filter.selectors.products = values[rowNum][filterColumns.products].split(separator);
       }
       if(values[rowNum][filterColumns.caseNumber] !==  ""){
         filter.selectors.caseNumber = values[rowNum][filterColumns.caseNumber];
@@ -248,8 +248,15 @@ function workOn() {
       if (filter.selectors.account) { // SFDC account selectors
         if (!isMatched('X-SFDC-X-Account-Number: ' + filter.selectors.account)) return false;
       }
-      if (filter.selectors.product) { // SFDC product selectors
-        if (!isMatched('X-SFDC-X-Product: ' + filter.selectors.product)) return false;
+      if (filter.selectors.products) { // SFDC product selectors
+        var ret = false;
+        filter.selectors.products.forEach (function(product, index){
+          Logger.log("Checking product " + product);
+          if (isMatched('X-SFDC-X-Product: ' + product)) {
+            ret = true;
+          }
+        });
+        if (ret == false) return false;
       }
       if (filter.selectors.caseNumber) { // SFDC case number selectors
         if (!isMatched('X-SFDC-X-Case-Number: ' + filter.selectors.caseNumber)) return false;
@@ -289,7 +296,7 @@ function workOn() {
 
       if (!dryrun) {
         if (filter.actions.labels !== undefined) {
-          var labels = filter.actions.labels.split(labelSeparator);
+          var labels = filter.actions.labels.split(separator);
           labels.forEach(function(label){
             if (label.indexOf(removeLabelPref) == 0){
               var labelName = label.replace(removeLabelPref, '' );
@@ -334,6 +341,7 @@ function workOn() {
     for (var i=0; i < filters.length; i++) {
       //Logger.log("Processing filter " +  filters[i].id);
       isMatched = applyFilters(filters[i]);
+      if (!isMatched) Logger.log("filter " + filters[i].id + " not matched");
       // if filter.stopProcessing is true we don't process the next filter
       if (filters[i].stopProcessing && isMatched){
         Logger.log("Stop processing filters, Stop is flagged");

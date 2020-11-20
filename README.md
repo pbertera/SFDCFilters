@@ -52,7 +52,7 @@ Selectors are used to match a mail, when a message is matched the actions define
 
 | Selector Name | Match if ... |
 |:-------------:|:-------------------:|
-| Product       | ... the email header `X-SFDC-X-Product` **is the same** of the defined value |
+| Product       | ... the email header `X-SFDC-X-Product` **is the same** of the defined value, multiple values can be listed separated by the separator defined into the `D2` cell of the `Config` sheet |
 | Case          | ... the email header `X-SFDC-X-Case-Number` **is the same** of the defined value |
 | Severity      | ... the email header `X-SFDC-X-Severity` **contains** the defined value |
 | TAM Case      | ... the email header `X-SFDC-X-TAM-Case` **is** `true` |
