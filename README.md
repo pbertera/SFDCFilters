@@ -21,7 +21,7 @@ This tool helps you tagging SFDC emails and removing most of the noise generated
 
 ## Installation
 
-1. Copy the [Google Sheet](https://docs.google.com/spreadsheets/d/1prit02jMf8Ojxj-iVJOoBvB4hlwSaq4GC4GTNHa4LkQ/edit#gid=0) in your drive
+1. Copy the [Google Sheet](https://docs.google.com/spreadsheets/d/1DQAjF73BGs6oTXpFKlQHcHmEm9BneGwQAoNUlDQTPtw/edit) in your drive
 2. Add your selectors and actions
 3. Make sure that the `Main filter` into the `Config` sheet is properly set (see below for more info)
 4. To test the rules, make sure to have some email matching the rules and the `Main filter` and then run the script clicking on **GSS SFDC filters -> Run**, this will run the script only one time
