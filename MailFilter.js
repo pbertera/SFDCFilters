@@ -72,7 +72,7 @@ function readFilters() {
   // index representing the selectors column (column A is 0)
   var filterColumns = {
     'isActive': 0,
-    'account': 1,
+    'accounts': 1,
     'products': 2,
     'caseNumber': 3,
     'caseSeverity': 4,
@@ -116,8 +116,8 @@ function readFilters() {
       Logger.log("Filter on row " + filter['id'] + " is active");
       // SELCTORS
       
-      if(values[rowNum][filterColumns.account] !==  ""){
-        filter.selectors.account = values[rowNum][filterColumns.account];
+      if(values[rowNum][filterColumns.accounts] !==  ""){
+        filter.selectors.accounts = values[rowNum][filterColumns.accounts].split(separator);
       }
       if(values[rowNum][filterColumns.products] !==  ""){
         filter.selectors.products = values[rowNum][filterColumns.products].split(separator);
@@ -245,8 +245,15 @@ function workOn() {
       if (filter.selectors.subject) { // email subject selectors
         if (!isMatched('Subject:.*?' + filter.selectors.subject)) return false;
       }
-      if (filter.selectors.account) { // SFDC account selectors
-        if (!isMatched('X-SFDC-X-Account-Number: ' + filter.selectors.account)) return false;
+      if (filter.selectors.accounts) { // SFDC account selectors
+        var ret = false;
+        filter.selectors.accounts.forEach (function(account, index){
+          Logger.log("Checking account " + account);
+          if (isMatched('X-SFDC-X-Account-Number: ' + account)) {
+            ret = true;
+          }
+        });
+        if (ret == false) return false;
       }
       if (filter.selectors.products) { // SFDC product selectors
         var ret = false;
